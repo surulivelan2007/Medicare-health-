@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MedCare India — Sign In</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --blue:#1565C0;--blue-dark:#0D47A1;--blue-light:#E3F2FD;--blue-mid:#1976D2;
+  --green:#2E7D32;--green-light:#E8F5E9;
+  --bg:#F0F4F8;--white:#fff;
+  --text:#1a1a2e;--text2:#555;--text3:#888;
+  --border:#E0E7EF;--radius:14px;--shadow:0 2px 12px rgba(21,101,192,0.08);
+  --error:#C62828;--error-bg:#FFEBEE;--success:#2E7D32;--success-bg:#E8F5E9;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;}
+.app{max-width:430px;width:100%;min-height:100vh;background:var(--bg);}
+
+.login-hero{background:linear-gradient(135deg,#1565C0 0%,#0D47A1 60%,#01579B 100%);padding:52px 24px 40px;text-align:center;color:#fff;}
+.app-icon-wrap{width:72px;height:72px;background:rgba(255,255,255,0.18);border-radius:20px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-size:32px;border:1.5px solid rgba(255,255,255,0.3);}
+.login-hero h1{font-family:'Poppins',sans-serif;font-size:28px;font-weight:700;margin-bottom:6px;}
+.login-hero p{font-size:14px;opacity:0.85;}
+
+.tab-row{display:flex;background:rgba(255,255,255,0.15);border-radius:12px;margin:0 24px;margin-top:-20px;position:relative;z-index:2;overflow:hidden;}
+.tab-btn{flex:1;padding:12px;background:none;border:none;color:rgba(255,255,255,0.7);font-size:14px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:all 0.2s;}
+.tab-btn.active{background:#fff;color:var(--blue);border-radius:10px;}
+
+.form-wrap{padding:24px 22px 32px;background:var(--bg);}
+.form-panel{display:none;}
+.form-panel.active{display:block;}
+
+.field{margin-bottom:14px;}
+.field label{font-size:13px;color:var(--text2);display:block;margin-bottom:6px;font-weight:700;}
+.field input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:'Nunito',sans-serif;background:#fff;color:var(--text);outline:none;transition:border 0.2s;}
+.field input:focus{border-color:var(--blue);}
+.field input.error{border-color:var(--error);}
+
+.phone-row{display:flex;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;transition:border 0.2s;}
+.phone-row:focus-within{border-color:var(--blue);}
+.phone-prefix{padding:12px 12px;font-size:14px;font-weight:800;color:var(--blue);background:var(--blue-light);border-right:1px solid var(--border);white-space:nowrap;}
+.phone-row input{flex:1;padding:12px 13px;border:none;font-size:15px;font-family:'Nunito',sans-serif;outline:none;background:#fff;}
+
+.btn-primary{width:100%;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:opacity 0.2s;}
+.btn-primary:active{opacity:0.88;}
+.btn-primary:disabled{opacity:0.6;cursor:not-allowed;}
+
+.alert{border-radius:10px;padding:11px 14px;font-size:13px;font-weight:700;margin-bottom:14px;display:none;}
+.alert.error{background:var(--error-bg);color:var(--error);border:1px solid #EF9A9A;}
+.alert.success{background:var(--success-bg);color:var(--success);border:1px solid #A5D6A7;}
+.alert.info{background:var(--blue-light);color:var(--blue);border:1px solid #90CAF9;}
+
+.hint{font-size:11px;color:var(--text3);margin-top:4px;}
+.divider{text-align:center;color:var(--text3);font-size:12px;margin:14px 0;position:relative;}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--border);}
+.divider::before{left:0;}.divider::after{right:0;}
+
+.footer-note{text-align:center;font-size:12px;color:var(--text3);margin-top:20px;line-height:1.6;}
+.footer-note a{color:var(--blue);text-decoration:none;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="login-hero">
+    <div class="app-icon-wrap">💊</div>
+    <h1>MedCare India</h1>
+    <p>Your personal health companion</p>
+  </div>
+
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="switchTab('login')">Sign In</button>
+    <button class="tab-btn" onclick="switchTab('register')">Register</button>
+  </div>
+
+  <div class="form-wrap">
+
+    <!-- LOGIN PANEL -->
+    <div id="panel-login" class="form-panel active">
+      <div id="login-alert" class="alert"></div>
+      <div class="field"><label>Mobile Number or Email</label><input type="text" id="login-id" placeholder="Mobile or email"/></div>
+      <div class="field"><label>Password</label><input type="password" id="login-pass" placeholder="••••••••"/></div>
+      <button class="btn-primary" id="login-btn" onclick="doLogin()">Sign In</button>
+      <div class="footer-note">Forgot password? <a href="#">Reset via email</a></div>
+    </div>
+
+    <!-- REGISTER PANEL -->
+    <div id="panel-register" class="form-panel">
+      <div id="reg-alert" class="alert"></div>
+      <div class="field"><label>Full Name</label><input type="text" id="reg-name" placeholder="e.g. Karthik Sundaram"/></div>
+      <div class="field"><label>Email Address</label><input type="email" id="reg-email" placeholder="yourname@gmail.com"/></div>
+      <div class="field">
+        <label>Mobile Number (India)</label>
+        <div class="phone-row">
+          <span class="phone-prefix">+91</span>
+          <input type="tel" id="reg-phone" placeholder="9876543210" maxlength="10" pattern="[6-9][0-9]{9}"/>
+        </div>
+        <p class="hint">10-digit Indian mobile number</p>
+      </div>
+      <div class="field"><label>Password</label><input type="password" id="reg-pass" placeholder="Min. 6 characters"/></div>
+      <div class="field"><label>Confirm Password</label><input type="password" id="reg-pass2" placeholder="Repeat password"/></div>
+      <button class="btn-primary" id="reg-btn" onclick="doRegister()">Create Account</button>
+      <div class="footer-note">By registering you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:3001'
+  : window.BACKEND_URL || 'https://your-railway-app.up.railway.app';
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===(tab==='login'?0:1)));
+  document.getElementById('panel-login').classList.toggle('active', tab==='login');
+  document.getElementById('panel-register').classList.toggle('active', tab==='register');
+}
+
+function showAlert(id, msg, type='error') {
+  const el = document.getElementById(id);
+  el.textContent = msg; el.className = `alert ${type}`; el.style.display='block';
+}
+function hideAlert(id) { document.getElementById(id).style.display='none'; }
+
+async function doLogin() {
+  hideAlert('login-alert');
+  const id   = document.getElementById('login-id').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  if (!id || !pass) { showAlert('login-alert','Please fill in all fields.'); return; }
+  const btn = document.getElementById('login-btn');
+  btn.disabled=true; btn.textContent='Signing in…';
+  try {
+    const res = await fetch(`${API}/api/auth/login`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ identifier: id, password: pass })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      localStorage.setItem('medcare_token', data.token);
+      localStorage.setItem('medcare_user', JSON.stringify(data.user));
+      showAlert('login-alert', `Welcome back, ${data.user.name}! Redirecting…`, 'success');
+      setTimeout(()=>{ window.location.href='index.html'; }, 1200);
+    } else {
+      showAlert('login-alert', data.error || 'Login failed. Please check your credentials.');
+      btn.disabled=false; btn.textContent='Sign In';
+    }
+  } catch(e) {
+    showAlert('login-alert', 'Cannot reach server. Please try again.');
+    btn.disabled=false; btn.textContent='Sign In';
+  }
+}
+
+async function doRegister() {
+  hideAlert('reg-alert');
+  const name  = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const phone = document.getElementById('reg-phone').value.trim();
+  const pass  = document.getElementById('reg-pass').value;
+  const pass2 = document.getElementById('reg-pass2').value;
+  if (!name||!email||!phone||!pass||!pass2) { showAlert('reg-alert','Please fill in all fields.'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAlert('reg-alert','Please enter a valid email address.'); return; }
+  if (!/^[6-9]\d{9}$/.test(phone)) { showAlert('reg-alert','Please enter a valid 10-digit Indian mobile number.'); return; }
+  if (pass.length<6) { showAlert('reg-alert','Password must be at least 6 characters.'); return; }
+  if (pass!==pass2) { showAlert('reg-alert','Passwords do not match.'); return; }
+  const btn = document.getElementById('reg-btn');
+  btn.disabled=true; btn.textContent='Creating account…';
+  try {
+    const res = await fetch(`${API}/api/auth/register`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name, email, phone, password: pass })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showAlert('reg-alert', '✅ Account created! Please sign in.', 'success');
+      setTimeout(()=>switchTab('login'), 1500);
+      btn.disabled=false; btn.textContent='Create Account';
+    } else {
+      showAlert('reg-alert', data.error || 'Registration failed.');
+      btn.disabled=false; btn.textContent='Create Account';
+    }
+  } catch(e) {
+    showAlert('reg-alert','Cannot reach server. Please try again.');
+    btn.disabled=false; btn.textContent='Create Account';
+  }
+}
+
+// Allow Enter key
+document.addEventListener('keydown', e => {
+  if (e.key==='Enter') {
+    if (document.getElementById('panel-login').classList.contains('active')) doLogin();
+    else doRegister();
+  }
+});
+
+// If already logged in, redirect
+if (localStorage.getItem('medcare_token')) window.location.href='index.html';
+</script>
+</body>
+</html>
